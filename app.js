@@ -1,13 +1,7 @@
-const SpeedTest = require('speedtest-net');
+const SpeedTest = require('./SpeedTest.js');
 
-async function runSpeedTest(){
-    let result = await new Promise(resolve => {
-        SpeedTest({maxTime: 1000}).on('done', data => {
-            console.log(data);
-            resolve(data);
-        });
-    });
-}
+let test = new SpeedTest();
 
-runSpeedTest();
-
+test.runner.on('done', function(){
+    test.postResults();
+});
