@@ -9,8 +9,8 @@ class SpeedTest {
     }
     this.runner = SpeedTestRunner(config).on('done', data => {
       this.results.speed = {
-        up: data.downloadSpeed,
-        down: data.uploadSpeed
+        up: data.uploadSpeed,
+        down: data.downloadSpeed
       };
       this.results.ping = data.bestPing
       this.results.timestamp.end = process.hrtime();
