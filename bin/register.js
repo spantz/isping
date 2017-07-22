@@ -1,8 +1,8 @@
 'use strict';
 
 const request = require('request');
+const tokenRepository = require('./../lib/TokenRepository');
 const fs = require('fs');
-const baseDir = __dirname;
 
 const args = require('minimist')(process.argv.slice(2));
 
@@ -33,7 +33,7 @@ request({
     console.log(JSON.parse(body).token);
 
     try {
-        fs.writeFileSync(`${baseDir}/.token`, JSON.stringify({token: authToken}));
+        tokenRepository.saveToken(authToken);
     } catch (e) {
         console.error('Unable to save token to file: ' + e.message);
         console.error(e);
