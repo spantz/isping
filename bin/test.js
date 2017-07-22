@@ -1,4 +1,4 @@
-const SpeedTest = require('./SpeedTest.js');
+const SpeedTest = require('./../lib/SpeedTest.js');
 
 let test = new SpeedTest();
 
