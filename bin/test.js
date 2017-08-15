@@ -6,6 +6,7 @@ if (!tokenRepository.tokenSaved()) {
     return;
 }
 
+console.log('running test, please wait...');
 let test = new SpeedTest();
 
 test.runner.on('done', function(){
