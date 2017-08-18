@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./app.js"
+    "dry-run": "node bin/dry-run.js",
+    "test": "node bin/test.js",
+    "register": "node bin/register.js"
   },
   "author": "",
   "license": "ISC",
