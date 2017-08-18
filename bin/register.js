@@ -3,6 +3,7 @@
 const request = require('request');
 const tokenRepository = require('./../lib/TokenRepository');
 const fs = require('fs');
+const Urls = require('./../lib/Urls');
 
 const args = require('minimist')(process.argv.slice(2));
 
@@ -13,10 +14,8 @@ if (typeof token === 'undefined' || token === '') {
     return;
 }
 
-const baseUrl = 'http://speed.app';
-
 request({
-    uri: `${baseUrl}/api/registerDevice/${token}`,
+    uri: Urls.constructRegisterUrl(token),
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'

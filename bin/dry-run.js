@@ -1,5 +1,6 @@
 'use strict';
 
+const Urls = require('./../lib/Urls');
 const request = require('request');
 const tokenRepository = require('./../lib/TokenRepository');
 
@@ -8,7 +9,7 @@ if (!tokenRepository.tokenSaved()) {
     return;
 }
 
-const url = `http://speed.app/api/dry-run?auth_token=${tokenRepository.getToken()}`;
+const url = Urls.constructDryRunUrl(tokenRepository.getToken());
 request(url, (error, response, body) => {
     if (response.statusCode !== 200) {
         console.error('DRY RUN FAILED!');
