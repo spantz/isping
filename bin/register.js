@@ -1,10 +1,10 @@
 'use strict';
 
-const request = require('request');
 const tokenRepository = require('./../lib/TokenRepository');
 const fs = require('fs');
 const Urls = require('./../lib/Urls');
 const Messenger = require('./../lib/Messenger');
+const Request = require('./../lib/Request');
 
 const args = require('minimist')(process.argv.slice(2));
 
@@ -15,22 +15,9 @@ if (typeof token === 'undefined' || token === '') {
     return;
 }
 
-request({
-    uri: Urls.constructRegisterUrl(token),
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    }
-}, (error, response, body) => {
-    if (response.statusCode !== 200) {
-        Messenger.error('FAILURE');
-        Messenger.error(body);
-        return;
-    }
-
-    const authToken = JSON.parse(body).token;
-
-    Messenger.log(JSON.parse(body).token);
+let request = new Request(Urls.constructRegisterPath(token), 'POST');
+request.execute().then(response => {
+    const authToken = response.getBody().token;
 
     try {
         tokenRepository.saveToken(authToken);
@@ -41,4 +28,8 @@ request({
     }
 
     Messenger.success('Success! Try the dry run script to ensure your token works.');
+    Messenger.success(`The command will be "${Messenger.colorize('npm run dry-run', Messenger.getColors().CYAN)}"`);
+}).catch(response => {
+    Messenger.error('FAILURE');
+    Messenger.error(response.getBody());
 });
