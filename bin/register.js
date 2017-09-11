@@ -16,6 +16,13 @@ if (typeof token === 'undefined' || token === '') {
 }
 
 let request = new Request(Urls.constructRegisterPath(token), 'POST');
+
+if (args.hasOwnProperty('name')) {
+    request.setParams({
+        name: args.name
+    });
+}
+
 request.execute().then(response => {
     const authToken = response.getBody().token;
 
