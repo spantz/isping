@@ -1,7 +1,6 @@
 'use strict';
 
 const tokenRepository = require('./../lib/TokenRepository');
-const fs = require('fs');
 const Urls = require('./../lib/Urls');
 const Messenger = require('./../lib/Messenger');
 const Request = require('./../lib/Request');
