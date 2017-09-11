@@ -6,7 +6,8 @@
   "scripts": {
     "dry-run": "node bin/dry-run.js",
     "test": "node bin/test.js",
-    "register": "node bin/register.js"
+    "register": "node bin/register.js",
+    "migrate": "node bin/migrate.js"
   },
   "author": "",
   "license": "ISC",
