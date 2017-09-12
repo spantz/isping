@@ -16,5 +16,6 @@ test.runner.on('done', function(){
     }).catch(response => {
         Messenger.error('Error in posting results to API!');
         Messenger.error(response.getError());
+        Messenger.error(response.getBody());
     });
 });
