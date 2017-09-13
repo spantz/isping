@@ -1,9 +1,8 @@
 'use strict';
 
-const tokenRepository = require('./../lib/TokenRepository');
-const Urls = require('./../lib/Urls');
+const apiService = require('./../lib/APIService');
 const Messenger = require('./../lib/Messenger');
-const Request = require('./../lib/Request');
+const Response = require('./../lib/Response');
 
 const args = require('minimist')(process.argv.slice(2));
 
@@ -14,28 +13,16 @@ if (typeof token === 'undefined' || token === '') {
     return;
 }
 
-let request = new Request(Urls.constructRegisterPath(token), 'POST');
-
-if (args.hasOwnProperty('name')) {
-    request.setParams({
-        name: args.name
+apiService.registerNewDevice(token, args.name)
+    .then(() => {
+        Messenger.success('Success! Try the dry run script to ensure your token works.');
+        Messenger.success(`The command will be "${Messenger.colorize('npm run dry-run', Messenger.getColors().CYAN)}"`);
+    }).catch(response => {
+        if (response instanceof Response) {
+            Messenger.error('API error prevented registration from occurring.');
+            Messenger.error(response.getBody());
+        } else {
+            Messenger.error('Unknown error occurred with registration.');
+            Messenger.error(response);
+        }
     });
-}
-
-request.execute().then(response => {
-    const authToken = response.getBody().token;
-
-    try {
-        tokenRepository.saveToken(authToken);
-    } catch (e) {
-        Messenger.error('Unable to save token to file: ' + e.message);
-        Messenger.error(e);
-        return;
-    }
-
-    Messenger.success('Success! Try the dry run script to ensure your token works.');
-    Messenger.success(`The command will be "${Messenger.colorize('npm run dry-run', Messenger.getColors().CYAN)}"`);
-}).catch(response => {
-    Messenger.error('FAILURE');
-    Messenger.error(response.getBody());
-});
