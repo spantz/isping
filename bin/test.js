@@ -2,7 +2,7 @@ const Messenger = require('./../lib/Messenger');
 const apiService = require('./../lib/APIService');
 const Response = require('./../lib/Response');
 
-apiService.runTest()
+return apiService.runTest()
     .then(() => Messenger.success('Test successful! Recorded to API.'))
     .catch(response => {
         if (response instanceof Response) {

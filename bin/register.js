@@ -13,11 +13,13 @@ if (typeof token === 'undefined' || token === '') {
     return;
 }
 
-apiService.registerNewDevice(token, args.name)
+Messenger.log('Registering your device...');
+return apiService.registerNewDevice(token, args.name)
     .then(() => {
-        Messenger.success('Success! Try the dry run script to ensure your token works.');
-        Messenger.success(`The command will be "${Messenger.colorize('npm run dry-run', Messenger.getColors().CYAN)}"`);
-    }).catch(response => {
+        Messenger.success('Success! Running a test now.');
+        return apiService.runTest();
+    }).then(() => Messenger.success(`Test complete! You're all set.`))
+    .catch(response => {
         if (response instanceof Response) {
             Messenger.error('API error prevented registration from occurring.');
             Messenger.error(response.getBody());

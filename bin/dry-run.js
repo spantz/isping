@@ -4,7 +4,7 @@ const apiService = require('./../lib/APIService');
 const Messenger = require('./../lib/Messenger');
 const Response = require('./../lib/Response');
 
-apiService.executeDryRun()
+return apiService.executeDryRun()
     .then(() => Messenger.success(`Dry run successful! You're ready to start logging internet speeds.`))
     .catch((response) => {
         Messenger.error('DRY RUN FAILED!');
