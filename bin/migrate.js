@@ -4,6 +4,8 @@ const tokenRepository = require('./../lib/TokenRepository');
 const Urls = require('./../lib/Urls');
 const Messenger = require('./../lib/Messenger');
 const Request = require('./../lib/Request');
+const Response = require('./../lib/Response');
+const apiService = require('./../lib/APIService');
 
 const args = require('minimist')(process.argv.slice(2));
 
@@ -15,8 +17,20 @@ if (typeof token === 'undefined' || token === '') {
 }
 
 try {
-    tokenRepository.saveToken(token);
-    Messenger.success('Successfully saved your new token. Try running a dry run to test your token.');
+    Messenger.log('Testing new token with dry run...');
+    return apiService.executeDryRun(token)
+        .then(() => {
+            tokenRepository.saveToken(token);
+            Messenger.success('Successfully saved your new token. Try running a dry run to test your token.');
+        }).catch(e => {
+            Messenger.error('Error migrating over to the new token.');
+            if (e instanceof Response) {
+                Messenger.error(e.getBody());
+            } else {
+                Messenger.error(e);
+            }
+            Messenger.error('Please check your token and try again.');
+        });
 } catch (e) {
     Messenger.error('ERROR SAVING THE TOKEN');
     Messenger.error(e);
