@@ -21,7 +21,7 @@ try {
     return apiService.executeDryRun(token)
         .then(() => {
             tokenRepository.saveToken(token);
-            Messenger.success('Successfully saved your new token. Try running a dry run to test your token.');
+            Messenger.success(`Your new token is successfully saved! You're ready to do some testing.`);
         }).catch(e => {
             Messenger.error('Error migrating over to the new token.');
             if (e instanceof Response) {
